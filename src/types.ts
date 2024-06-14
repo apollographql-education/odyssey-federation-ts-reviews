@@ -1,5 +1,4 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { DataSourceContext } from './context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -17,81 +16,51 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type Amenity = {
-  __typename?: 'Amenity';
-  /** The amenity category the amenity belongs to */
-  category: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  /** The amenity's name */
-  name: Scalars['String']['output'];
-};
-
-export type CreateListingInput = {
-  /** The Listing's amenities */
-  amenities: Array<Scalars['ID']['input']>;
-  /** Indicates whether listing is closed for bookings (on hiatus) */
-  closedForBookings?: InputMaybe<Scalars['Boolean']['input']>;
-  /** The cost per night */
-  costPerNight: Scalars['Float']['input'];
-  /** The listing's description */
-  description: Scalars['String']['input'];
-  /** The number of beds available */
-  numOfBeds: Scalars['Int']['input'];
-  /** The listing's title */
-  title: Scalars['String']['input'];
-};
-
-export type CreateListingResponse = {
-  __typename?: 'CreateListingResponse';
-  /** Similar to HTTP status code, represents the status of the mutation */
-  code: Scalars['Int']['output'];
-  /** The newly created listing */
-  listing?: Maybe<Listing>;
-  /** Human-readable message for the UI */
-  message: Scalars['String']['output'];
-  /** Indicates whether the mutation was successful */
-  success: Scalars['Boolean']['output'];
-};
-
-/** A particular intergalactic location available for booking */
-export type Listing = {
-  __typename?: 'Listing';
-  /** The amenities available for this listing */
-  amenities: Array<Amenity>;
-  /** Indicates whether listing is closed for bookings (on hiatus) */
-  closedForBookings?: Maybe<Scalars['Boolean']['output']>;
-  /** The cost per night */
-  costPerNight?: Maybe<Scalars['Float']['output']>;
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  /** The number of beds available */
-  numOfBeds?: Maybe<Scalars['Int']['output']>;
-  /** The listing's title */
-  title: Scalars['String']['output'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Creates a new listing */
-  createListing: CreateListingResponse;
+  /** Creates a new review in the database */
+  submitReview: SubmitReviewResponse;
 };
 
 
-export type MutationCreateListingArgs = {
-  input: CreateListingInput;
+export type MutationSubmitReviewArgs = {
+  listingId: Scalars['ID']['input'];
+  review: ReviewInput;
 };
 
 export type Query = {
   __typename?: 'Query';
-  /** A curated array of listings to feature on the homepage */
-  featuredListings: Array<Listing>;
-  /** Returns the details about this listing */
-  listing?: Maybe<Listing>;
+  /** A list of all the reviews in the database */
+  allReviews: Array<Review>;
 };
 
+/** A comment and a rating submitted by a guest about a particular listing */
+export type Review = {
+  __typename?: 'Review';
+  id: Scalars['ID']['output'];
+  /** The numerical rating for the review target, on a scale of 1-5, with 5 being excellent. */
+  rating: Scalars['Float']['output'];
+  /** Comment the author has written */
+  text: Scalars['String']['output'];
+};
 
-export type QueryListingArgs = {
-  id: Scalars['ID']['input'];
+export type ReviewInput = {
+  /** The numerical rating for the review target, on a scale of 1-5, with 5 being excellent. */
+  rating: Scalars['Float']['input'];
+  /** Comment the author has written */
+  text: Scalars['String']['input'];
+};
+
+export type SubmitReviewResponse = {
+  __typename?: 'SubmitReviewResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']['output'];
+  /** Human-readable message for the UI */
+  message: Scalars['String']['output'];
+  /** Newly created review */
+  review?: Maybe<Review>;
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']['output'];
 };
 
 
@@ -165,74 +134,59 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Amenity: ResolverTypeWrapper<Amenity>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  CreateListingInput: CreateListingInput;
-  CreateListingResponse: ResolverTypeWrapper<CreateListingResponse>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  Listing: ResolverTypeWrapper<Listing>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  Review: ResolverTypeWrapper<Review>;
+  ReviewInput: ReviewInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  SubmitReviewResponse: ResolverTypeWrapper<SubmitReviewResponse>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Amenity: Amenity;
   Boolean: Scalars['Boolean']['output'];
-  CreateListingInput: CreateListingInput;
-  CreateListingResponse: CreateListingResponse;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
-  Listing: Listing;
   Mutation: {};
   Query: {};
+  Review: Review;
+  ReviewInput: ReviewInput;
   String: Scalars['String']['output'];
+  SubmitReviewResponse: SubmitReviewResponse;
 };
 
-export type AmenityResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Amenity'] = ResolversParentTypes['Amenity']> = {
-  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  submitReview?: Resolver<ResolversTypes['SubmitReviewResponse'], ParentType, ContextType, RequireFields<MutationSubmitReviewArgs, 'listingId' | 'review'>>;
+};
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  allReviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
+};
+
+export type ReviewResolvers<ContextType = any, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateListingResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateListingResponse'] = ResolversParentTypes['CreateListingResponse']> = {
+export type SubmitReviewResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SubmitReviewResponse'] = ResolversParentTypes['SubmitReviewResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  listing?: Resolver<Maybe<ResolversTypes['Listing']>, ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  review?: Resolver<Maybe<ResolversTypes['Review']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ListingResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Listing'] = ResolversParentTypes['Listing']> = {
-  amenities?: Resolver<Array<ResolversTypes['Amenity']>, ParentType, ContextType>;
-  closedForBookings?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  costPerNight?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  numOfBeds?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createListing?: Resolver<ResolversTypes['CreateListingResponse'], ParentType, ContextType, RequireFields<MutationCreateListingArgs, 'input'>>;
-};
-
-export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  featuredListings?: Resolver<Array<ResolversTypes['Listing']>, ParentType, ContextType>;
-  listing?: Resolver<Maybe<ResolversTypes['Listing']>, ParentType, ContextType, RequireFields<QueryListingArgs, 'id'>>;
-};
-
-export type Resolvers<ContextType = DataSourceContext> = {
-  Amenity?: AmenityResolvers<ContextType>;
-  CreateListingResponse?: CreateListingResponseResolvers<ContextType>;
-  Listing?: ListingResolvers<ContextType>;
+export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Review?: ReviewResolvers<ContextType>;
+  SubmitReviewResponse?: SubmitReviewResponseResolvers<ContextType>;
 };
 

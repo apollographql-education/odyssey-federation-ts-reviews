@@ -1,61 +1,36 @@
-"A particular intergalactic location available for booking"
-type Listing {
-  id: ID!
-  "The listing's title"
-  title: String!
-  description: String!
-  "The number of beds available"
-  numOfBeds: Int
-  "The cost per night"
-  costPerNight: Float
-  "Indicates whether listing is closed for bookings (on hiatus)"
-  closedForBookings: Boolean
-  "The amenities available for this listing"
-  amenities: [Amenity!]!
-}
-
-type Amenity {
-  id: ID!
-  "The amenity category the amenity belongs to"
-  category: String!
-  "The amenity's name"
-  name: String!
-}
-
 type Query {
-  "A curated array of listings to feature on the homepage"
-  featuredListings: [Listing!]!
-  "Returns the details about this listing"
-  listing(id: ID!): Listing
+  "A list of all the reviews in the database"
+  allReviews: [Review!]!
 }
 
 type Mutation {
-  "Creates a new listing"
-  createListing(input: CreateListingInput!): CreateListingResponse!
+  "Creates a new review in the database"
+  submitReview(listingId: ID!, review: ReviewInput!): SubmitReviewResponse!
 }
 
-input CreateListingInput {
-  "The listing's title"
-  title: String!
-  "The listing's description"
-  description: String!
-  "The number of beds available"
-  numOfBeds: Int!
-  "The cost per night"
-  costPerNight: Float!
-  "Indicates whether listing is closed for bookings (on hiatus)"
-  closedForBookings: Boolean
-  "The Listing's amenities"
-  amenities: [ID!]!
+input ReviewInput {
+  "Comment the author has written"
+  text: String!
+  "The numerical rating for the review target, on a scale of 1-5, with 5 being excellent."
+  rating: Float!
 }
 
-type CreateListingResponse {
+type SubmitReviewResponse {
   "Similar to HTTP status code, represents the status of the mutation"
   code: Int!
   "Indicates whether the mutation was successful"
   success: Boolean!
   "Human-readable message for the UI"
   message: String!
-  "The newly created listing"
-  listing: Listing
+  "Newly created review"
+  review: Review
+}
+
+"A comment and a rating submitted by a guest about a particular listing"
+type Review {
+  id: ID!
+  "Comment the author has written"
+  text: String!
+  "The numerical rating for the review target, on a scale of 1-5, with 5 being excellent."
+  rating: Float!
 }

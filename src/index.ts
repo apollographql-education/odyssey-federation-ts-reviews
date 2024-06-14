@@ -4,7 +4,6 @@ import { readFileSync } from "fs";
 import path from "path";
 import { gql } from "graphql-tag";
 import { resolvers } from "./resolvers";
-import { ListingAPI } from "./datasources/listing-api";
 import { buildSubgraphSchema } from "@apollo/subgraph";
 
 const typeDefs = gql(
@@ -22,7 +21,9 @@ async function startApolloServer() {
       const { cache } = server;
       return {
         dataSources: {
-          listingAPI: new ListingAPI({ cache }),
+          reviewAPI: {
+            reviews: true
+          }
         },
       };
     },
