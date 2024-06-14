@@ -18,7 +18,9 @@
     "dev": "concurrently \"ts-node-dev --respawn --watch ./**/*.graphql ./src/index.ts\" \"npm run generate --watch\"",
     "start": "npm run compile && nodemon ./dist/index.js",
     "test": "jest",
-    "generate": "graphql-codegen --watch \"src/schema.graphql\""
+    "generate": "graphql-codegen --watch \"src/schema.graphql\"",
+    "db:init": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "db:reset": "sequelize-cli db:migrate:undo:all && npm run db:init"
   },
   "dependencies": {
     "@apollo/datasource-rest": "^6.3.0",
@@ -26,7 +28,10 @@
     "@apollo/subgraph": "^2.8.0",
     "@parcel/watcher": "^2.4.0",
     "graphql": "^16.8.2",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
