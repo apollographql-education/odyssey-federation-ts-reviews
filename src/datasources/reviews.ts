@@ -1,10 +1,10 @@
 import { Sequelize, DataTypes } from "sequelize";
 import config from "../sequelize/config/config.js"
 
-import { ReviewModel } from "../sequelize/models/review"
+import { ReviewModel, Review } from "../sequelize/models/review"
 
 const env = process.env.NODE_ENV || 'development'
-const configEnv = config['development']
+const configEnv = config[env as keyof typeof config]
 
 class ReviewsDB {
   constructor() {
@@ -13,7 +13,11 @@ class ReviewsDB {
 
   db;
 
-  initializeSequelizeDb() {
+  initializeSequelizeDb(): {
+    Review: typeof Review;
+    sequelize: Sequelize;
+    Sequelize: typeof Sequelize;
+} {
     let sequelize;
 
 
