@@ -49,6 +49,20 @@ class ReviewsDB {
   async getReviewsByListing(id: string) {
     return this.db.Review.findAll({where: { listingId: id }})
   }
+
+  async getOverallRatingForListing(listingId: string) {
+    const review = await this.db.Review.findOne({
+      where: { listingId },
+      attributes: [
+        [
+          this.db.sequelize.fn("AVG", this.db.sequelize.col("rating")),
+          "avg_rating",
+        ],
+      ],
+    });
+
+    return review.getDataValue("avg_rating");
+  }
 }
 
 export default ReviewsDB;
