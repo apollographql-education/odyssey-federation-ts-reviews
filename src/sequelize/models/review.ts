@@ -6,7 +6,6 @@ export interface ReviewAttributes {
   rating: number;
   text: string;
   listingId: string;
-  avg_rating: number;
 }
 
 export class Review extends Model<ReviewAttributes> implements ReviewAttributes{
@@ -16,7 +15,6 @@ export class Review extends Model<ReviewAttributes> implements ReviewAttributes{
   declare text: string;
   declare rating: number;
   declare listingId: string;
-  declare avg_rating: number;
 }
 
 export const ReviewModel = (sequelize: any, DataTypes: any): typeof Review => {
