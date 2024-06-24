@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { ListingModel } from './src/models';
+import { DataSourceContext } from './context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -15,16 +15,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  _FieldSet: { input: any; output: any; }
-};
-
-export type Listing = {
-  __typename?: 'Listing';
-  id: Scalars['ID']['output'];
-  /** The overall calculated rating for a listing */
-  overallRating?: Maybe<Scalars['Float']['output']>;
-  /** The submitted reviews for this listing */
-  reviews: Array<Review>;
 };
 
 export type Mutation = {
@@ -74,22 +64,10 @@ export type SubmitReviewResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type WithIndex<TObject> = TObject & Record<string, any>;
-export type ResolversObject<TObject> = WithIndex<TObject>;
+
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-export type ReferenceResolver<TResult, TReference, TContext> = (
-      reference: TReference,
-      context: TContext,
-      info: GraphQLResolveInfo
-    ) => Promise<TResult> | TResult;
-
-      type ScalarCheck<T, S> = S extends true ? T : NullableCheck<T, S>;
-      type NullableCheck<T, S> = Maybe<T> extends T ? Maybe<ListCheck<NonNullable<T>, S>> : ListCheck<T, S>;
-      type ListCheck<T, S> = T extends (infer U)[] ? NullableCheck<U, S>[] : GraphQLRecursivePick<T, S>;
-      export type GraphQLRecursivePick<T, S> = { [K in keyof T & keyof S]: ScalarCheck<T[K], S[K]> };
-    
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
@@ -156,71 +134,60 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = ResolversObject<{
-  Listing: ResolverTypeWrapper<ListingModel>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+export type ResolversTypes = {
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Review: ResolverTypeWrapper<Review>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   ReviewInput: ReviewInput;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   SubmitReviewResponse: ResolverTypeWrapper<SubmitReviewResponse>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-}>;
+};
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = ResolversObject<{
-  Listing: ListingModel;
-  ID: Scalars['ID']['output'];
+export type ResolversParentTypes = {
+  Boolean: Scalars['Boolean']['output'];
   Float: Scalars['Float']['output'];
+  ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
   Review: Review;
-  String: Scalars['String']['output'];
   ReviewInput: ReviewInput;
+  String: Scalars['String']['output'];
   SubmitReviewResponse: SubmitReviewResponse;
-  Int: Scalars['Int']['output'];
-  Boolean: Scalars['Boolean']['output'];
-}>;
+};
 
-export type ListingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Listing'] = ResolversParentTypes['Listing']> = ResolversObject<{
-  __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['Listing']>, { __typename: 'Listing' } & GraphQLRecursivePick<ParentType, {"id":true}>, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  overallRating?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   submitReview?: Resolver<ResolversTypes['SubmitReviewResponse'], ParentType, ContextType, RequireFields<MutationSubmitReviewArgs, 'listingId' | 'review'>>;
-}>;
+};
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allReviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
-}>;
+};
 
-export type ReviewResolvers<ContextType = any, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
+export type ReviewResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
+};
 
-export type SubmitReviewResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SubmitReviewResponse'] = ResolversParentTypes['SubmitReviewResponse']> = ResolversObject<{
+export type SubmitReviewResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['SubmitReviewResponse'] = ResolversParentTypes['SubmitReviewResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   review?: Resolver<Maybe<ResolversTypes['Review']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
+};
 
-export type Resolvers<ContextType = any> = ResolversObject<{
-  Listing?: ListingResolvers<ContextType>;
+export type Resolvers<ContextType = DataSourceContext> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   SubmitReviewResponse?: SubmitReviewResponseResolvers<ContextType>;
-}>;
+};
 

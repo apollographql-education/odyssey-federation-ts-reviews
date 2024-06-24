@@ -7,16 +7,15 @@ export const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    submitReview: (_, {listingId, review}, ) => {
+    submitReview: async (_, {listingId, review}, {dataSources} ) => {
+      const { text, rating } = review;
+      const submittedReview = await dataSources.reviewsDb.createReviewForListing({ listingId, text, rating})
 
       return {
         code: 200,
         success: true,
-        message: 'worked',
-        review: {
-          id: '7',
-          ...review
-        }
+        message: 'Review successfully submitted',
+        review: submittedReview
       }
     }
     },

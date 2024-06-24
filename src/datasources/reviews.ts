@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import config from "../sequelize/config/config.js"
+import { v4 as uuidv4 } from "uuid" 
 
 import { ReviewModel, Review } from "../sequelize/models/review"
 
@@ -48,6 +49,17 @@ class ReviewsDB {
 
   async getReviewsByListing(id: string) {
     return this.db.Review.findAll({where: { listingId: id }})
+  }
+
+  async createReviewForListing({ listingId, text, rating }: { listingId: string, text: string, rating: number }) {
+    const review = await this.db.Review.create({
+      id: uuidv4(),
+      text,
+      rating,
+      listingId
+    })
+
+    return review;
   }
 
   async getOverallRatingForListing(listingId: string) {

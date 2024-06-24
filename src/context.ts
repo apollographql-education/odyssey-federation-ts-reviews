@@ -1,7 +1,7 @@
-// import { ListingAPI } from "./datasources/listing-api";
+import ReviewsDB from "./datasources/reviews";
 
-// export type DataSourceContext = {
-//   dataSources: {
-//     reviewsDb: ReviewsDB;
-//   };
-// };
+export type DataSourceContext = {
+  dataSources: {
+    reviewsDb: ReviewsDB;
+  };
+};
