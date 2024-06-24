@@ -74,7 +74,7 @@ class ReviewsDB {
     });
 
     // @ts-ignore
-    return review.getDataValue("avg_rating");
+    return review.getDataValue("avg_rating") as number;
   }
 }
 
