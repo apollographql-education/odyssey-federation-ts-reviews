@@ -8,7 +8,6 @@ const config: CodegenConfig = {
       config: {
         // contextType: "./context#DataSourceContext",
         useIndexSignature: true,
-        federation: true,
         mappers: {
           Listing: "./src/models#ListingModel"
         }
