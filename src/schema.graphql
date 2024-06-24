@@ -15,14 +15,6 @@ input ReviewInput {
   rating: Float!
 }
 
-type Listing @key(fields: "id") {
-  id: ID!
-  "The submitted reviews for this listing"
-  reviews: [Review!]!
-  "The overall calculated rating for a listing"
-  overallRating: Float
-}
-
 type SubmitReviewResponse {
   "Similar to HTTP status code, represents the status of the mutation"
   code: Int!
