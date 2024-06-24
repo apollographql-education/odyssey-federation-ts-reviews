@@ -24,7 +24,7 @@
     },
     "typeRoots": ["node_modules/@types", "src/@types"],
   },
-  "files": ["src/@types/graphql.d.ts"],
+  "files": ["src/graphql.d.ts"],
   "include": ["src/**/*", "src/sequelize"],
   "exclude": ["codegen.ts", "dist"]
 }
