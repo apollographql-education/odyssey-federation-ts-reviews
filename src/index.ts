@@ -5,6 +5,7 @@ import path from "path";
 import { gql } from "graphql-tag";
 import { resolvers } from "./resolvers";
 import { buildSubgraphSchema } from "@apollo/subgraph";
+import ReviewsDB from "./datasources/reviews"
 
 const typeDefs = gql(
   readFileSync(path.resolve(__dirname, "./schema.graphql"), {
@@ -18,15 +19,15 @@ async function startApolloServer() {
   });
   const { url } = await startStandaloneServer(server, {
     context: async () => {
-      const { cache } = server;
       return {
         dataSources: {
-          reviewAPI: {
-            reviews: true
-          }
+          reviewsDb: new ReviewsDB()
         },
       };
     },
+    listen: {
+      port: 4001
+    }
   });
   console.log(`
     🚀  Server is running!

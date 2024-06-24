@@ -5,9 +5,14 @@ const config: CodegenConfig = {
   generates: {
     "./src/types.ts": {
       plugins: ["typescript", "typescript-resolvers"],
-      // config: {
-      //   contextType: "./context#DataSourceContext",
-      // },
+      config: {
+        // contextType: "./context#DataSourceContext",
+        useIndexSignature: true,
+        federation: true,
+        mappers: {
+          Listing: "./src/models#ListingModel"
+        }
+      },
     },
   },
 };

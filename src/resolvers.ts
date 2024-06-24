@@ -12,8 +12,12 @@ const allReviews = [
 
 export const resolvers: Resolvers = {
   Query: {
-    allReviews: () => {
-      return allReviews;
+    allReviews: async (_, __, {dataSources}) => {
+      // return dataSources.reviewsDb.getReview("review-1")
+      const reviews = await dataSources.reviewsDb.getAllReviews();
+      // console.log(reviews)
+      return reviews;
+      // // return allReviews
     },
   },
   Mutation: {
@@ -29,5 +33,13 @@ export const resolvers: Resolvers = {
         }
       }
     }
+    },
+    Listing: {
+      __resolveReference: (representation) => {
+        console.log({representation})
+        return representation;
+      },
+      reviews: () => [],
+      overallRating: () => 4
     }
 };
