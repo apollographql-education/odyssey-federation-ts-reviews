@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes } from "sequelize";
 import config from "../sequelize/config/config.js"
 
-import {ReviewModel} from "../sequelize/models/review"
+import { ReviewModel } from "../sequelize/models/review"
 
 const env = process.env.NODE_ENV || 'development'
 const configEnv = config['development']
