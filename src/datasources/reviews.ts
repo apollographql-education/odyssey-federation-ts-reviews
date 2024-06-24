@@ -45,6 +45,10 @@ class ReviewsDB {
   async getAllReviews() {
     return this.db.Review.findAll();
   }
+
+  async getReviewsByListing(id: string) {
+    return this.db.Review.findAll({where: { listingId: id }})
+  }
 }
 
 export default ReviewsDB;
