@@ -7,10 +7,6 @@ const config: CodegenConfig = {
       plugins: ["typescript", "typescript-resolvers"],
       config: {
         // contextType: "./context#DataSourceContext",
-        useIndexSignature: true,
-        mappers: {
-          Listing: "./src/models#ListingModel"
-        }
       },
     },
   },
