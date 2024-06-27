@@ -1,8 +1,8 @@
 import { Sequelize, DataTypes } from "sequelize";
-import config from "../sequelize/config/config.js"
+import config from "./sequelize/config/config.js"
 import { v4 as uuidv4 } from "uuid" 
 
-import { ReviewModel, Review } from "../sequelize/models/review"
+import { ReviewModel, Review } from "./sequelize/models/review"
 
 const env = process.env.NODE_ENV || 'development'
 const configEnv = config[env as keyof typeof config]
